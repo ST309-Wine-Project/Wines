@@ -7,19 +7,22 @@
     a. by vintage (should be more under control)
     b. by price
     (c. by point)
-5. Sort out text fuck-ups
+5. Sort out text fuck-ups (DECIDE IF WE WANT TO)
 6. Look into the missing taster_name
 
 "
 
 library(tidyverse)
 library(stringr)
+library(stringi) #string functionality for wrapper in rvest
+library(rvest) #for repair_encoding(), also a package for webscraping
 
-### data inputting
+#required data loading
 wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
 
 types <- read.csv("./Wine Varieties by Type/red_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
 
+#data prepping
 wines <- wines0 %>%
   mutate(vintage = as.numeric(str_match(title, "[2|1][0-9]{3}")))
 
@@ -47,5 +50,12 @@ varieties <- varieties %>%
 wines$blend <- ifelse(wines$variety %in% varieties$variety[varieties$blend == T], T, F)
 wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "red"], "red", NA)
 #wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "white"], "white", NA)
+
+#fix encoding errors
+variety_old = varieties$variety
+variety_fix = repair_encoding(variety_old)
+index = variety_old != variety_fix
+View(data.frame(variety_old[index], variety_fix[index]))
+# ^ mostly correct fixes, but we would have to do some work by hand
 
 write.csv(wines, "wine-data-tidied.csv")
