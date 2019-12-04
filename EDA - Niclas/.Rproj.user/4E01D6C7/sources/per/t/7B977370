@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1574956529888.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7B977370",
+    "lastKnownWriteTime" : 7454987295351119928,
+    "last_content_update" : 1574956529888,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "19D3BDF0",
+        "caption" : "wines",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=wines&cache_key=19D3BDF0",
+        "displayedObservations" : 129971,
+        "environment" : "",
+        "expression" : "wines",
+        "object" : "wines",
+        "preview" : 0,
+        "totalObservations" : 129971,
+        "variables" : 15
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

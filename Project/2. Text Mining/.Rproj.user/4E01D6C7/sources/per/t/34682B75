@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1575376694762.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "626684643",
+    "id" : "34682B75",
+    "lastKnownWriteTime" : 1575383521,
+    "last_content_update" : 1575383521477,
+    "path" : "C:/Users/nicla/OneDrive - London School of Economics/ST309 Project/Wine Analysis/Project/2. Text Mining/Script1.R",
+    "project_path" : "Script1.R",
+    "properties" : {
+        "cursorPosition" : "3,7",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
