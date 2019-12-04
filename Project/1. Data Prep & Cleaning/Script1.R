@@ -7,7 +7,7 @@
     a. by vintage (should be more under control)
     b. by price
     (c. by point)
-5. Sort out text fuck-ups (DECIDE IF WE WANT TO)
+5. DONE {xxx Sort out text fuck-ups (DECIDE IF WE WANT TO) xxx}
 6. Look into the missing taster_name
 
 "
