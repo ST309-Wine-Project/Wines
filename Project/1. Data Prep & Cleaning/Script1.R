@@ -7,19 +7,27 @@
     a. by vintage (should be more under control)
     b. by price
     (c. by point)
-5. Sort out text fuck-ups
+5. DONE {xxx Sort out text fuck-ups (DECIDE IF WE WANT TO) xxx}
 6. Look into the missing taster_name
 
 "
 
+### libraries ###
+
 library(tidyverse)
 library(stringr)
+library(stringi) #string functionality for wrapper in rvest
+library(rvest) #for repair_encoding(), also a package for webscraping
 
-### data inputting
+
+### required data loading ###
+
 wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
 
 types <- read.csv("./Wine Varieties by Type/red_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
 
+
+### data prepping ###
 wines <- wines0 %>%
   mutate(vintage = as.numeric(str_match(title, "[2|1][0-9]{3}")))
 
@@ -48,4 +56,46 @@ wines$blend <- ifelse(wines$variety %in% varieties$variety[varieties$blend == T]
 wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "red"], "red", NA)
 #wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "white"], "white", NA)
 
-write.csv(wines, "wine-data-tidied.csv")
+
+### fix encoding errors ###
+
+## taster_name ##
+
+levels(wines$taster_name)[levels(wines$taster_name) == "Kerin Oâ€™Keefe"] = "Kerin O'Keefe"
+
+## variety ##
+variety_old = varieties$variety
+variety_fix = repair_encoding(variety_old)
+index = variety_old != variety_fix
+variety_fix = data.frame(variety_old[index], variety_fix[index], rep(F, sum(index)))
+names(variety_fix) = c("original", "fixed", "manual")
+
+#View(variety_fix) # identify manual errors
+variety_fix[8,3] = T ; variety_fix[10,3] = T
+variety_fix[24,3] = T ; variety_fix[63,3] = T
+#~View(data.frame(variety_fix$original[variety_fix$manual], variety_fix$fix[variety_fix$manual]))
+
+variety_fix$fixed = as.character(variety_fix$fixed)
+variety_fix[8,2] = "Babić"
+variety_fix[10,2] = "Boğazkere"
+variety_fix[24,2] = "Fetească Regală"
+variety_fix[63,2] = "Tămâioasă Românească"
+variety_fix$fixed = as.factor(variety_fix$fixed)
+#~View(data.frame(variety_fix$original[variety_fix$manual], variety_fix$fix[variety_fix$manual]))
+
+varieties$variety = as.character(varieties$variety)
+varieties$variety[index] = as.character(variety_fix$fixed)
+varieties$variety = as.factor(varieties$variety)
+
+levels(wines$variety) = varieties$variety
+
+## designation, title, province, region_1, region_2, winery ##
+
+wines$designation = repair_encoding(wines$designation)
+wines$title = repair_encoding(wines$title)
+wines$province = repair_encoding(wines$province) 
+wines$region_1 = repair_encoding(wines$region_1)
+wines$region_2 = repair_encoding(wines$region_2)
+wines$winery = repair_encoding(wines$winery)
+
+#write.csv(wines, "wine-data-tidied.csv")
