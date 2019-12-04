@@ -22,7 +22,7 @@ library(rvest) #for repair_encoding(), also a package for webscraping
 
 ### required data loading ###
 
-wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
+#wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
 
 types <- read.csv("./Wine Varieties by Type/red_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
 
@@ -61,7 +61,7 @@ wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "red
 
 ## taster_name ##
 
-levels(wines$taster_name)[levels(wines$taster_name) == "Kerin Oâ€™Keefe"] = "Kerin O'Keefe"
+levels(wines$taster_name)[levels(wines$taster_name) == "Kerin O�???TKeefe"] = "Kerin O'Keefe" #fix by: �???T
 
 ## variety ##
 variety_old = varieties$variety
@@ -76,10 +76,10 @@ variety_fix[24,3] = T ; variety_fix[63,3] = T
 #~View(data.frame(variety_fix$original[variety_fix$manual], variety_fix$fix[variety_fix$manual]))
 
 variety_fix$fixed = as.character(variety_fix$fixed)
-variety_fix[8,2] = "Babić"
-variety_fix[10,2] = "Boğazkere"
-variety_fix[24,2] = "Fetească Regală"
-variety_fix[63,2] = "Tămâioasă Românească"
+variety_fix[8,2] = "Babic"
+variety_fix[10,2] = "Bogazkere"
+variety_fix[24,2] = "Feteasca Regala"
+variety_fix[63,2] = "Tamaioasa Romaneasca"
 variety_fix$fixed = as.factor(variety_fix$fixed)
 #~View(data.frame(variety_fix$original[variety_fix$manual], variety_fix$fix[variety_fix$manual]))
 
@@ -97,5 +97,6 @@ wines$province = repair_encoding(wines$province)
 wines$region_1 = repair_encoding(wines$region_1)
 wines$region_2 = repair_encoding(wines$region_2)
 wines$winery = repair_encoding(wines$winery)
+
 
 #write.csv(wines, "wine-data-tidied.csv")
