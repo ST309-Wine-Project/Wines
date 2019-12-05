@@ -1,8 +1,11 @@
 # TO-DO
 "
 1. DONE {xxx Implement 'type' for white wines xxx}
-2. Implement 'type' for roses
-3. -''- 'type' for any other type of drink ('champagne', 'sherry', 'cava')
+2. Implement 'type' for roses (don't know if there are any?)
+3. DONE {xxx -''- 'type' for any other type of drink ('champagne', 'sherry', 'cava') xxx}
+    a. DONE {xxx Automatic matching xxx}
+    b. Manual matching
+    c. fix port text matching (would match 'portuguese' rn)
 4. CLEAN OUTLIERS
     a. by vintage (should be more under control)
     b. by price
@@ -27,7 +30,10 @@ library(rvest) #for repair_encoding(), also a package for webscraping
 types <- read.csv("./Wine Varieties by Type/red_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
 white_types <- read.csv("./Wine Varieties by Type/white_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
 names(white_types) <- c("variety", "type")
-types <- rbind(types, white_types)
+misc_types <- read.csv("./Wine Varieties by Type/misc_types.csv", header = T)
+names(misc_types) <- c("variety", "type")
+levels(misc_types$type) # check for misspellings
+types <- rbind(types, white_types, misc_types)
 
 ### data prepping ###
 wines <- wines0 %>%
@@ -48,6 +54,8 @@ varieties <- varieties %>%
   mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)sherry")), type)) %>%
   mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)prosecco")), type)) %>%
   mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)sparkling")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)madeira")), type)) %>%
+  #mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)port")), type)) %>% #will match with "portuguese"
   
   #search by membership in type-vector (may be redundant)
   mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "red"]), "red", type)) %>%
@@ -57,7 +65,13 @@ varieties <- varieties %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type)) %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "white"], collapse = "|"), ignore_case = T))), "white", type))
 
-#varieties$variety[is.na(varieties$type)]
+varieties$type[varieties$variety == "Apple"] = "apple ice wine"
+varieties$blend[str_detect(varieties$variety, "Thurgau")] = F
+
+# create file for checking leftover types
+#types_misc <- data.frame(varieties$variety[is.na(varieties$type)], repair_encoding(varieties$variety[is.na(varieties$type)]), varieties$type[is.na(varieties$type)])
+#names(types_misc) = c("variety", "variety_fix", "type")
+#write.csv(types_misc, "types_misc.csv")
 
 #use the varieties df to incorporate type into 'wines'
 wines$blend <- ifelse(wines$variety %in% varieties$variety[varieties$blend == T], T, F)
