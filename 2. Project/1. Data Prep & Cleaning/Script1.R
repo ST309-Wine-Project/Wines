@@ -1,8 +1,8 @@
 # TO-DO
 "
-1. Implement 'type' for white wines
+1. DONE {xxx Implement 'type' for white wines xxx}
 2. Implement 'type' for roses
-3. -''- 'type' for any other type of drink ('sherry', 'cava')
+3. -''- 'type' for any other type of drink ('champagne', 'sherry', 'cava')
 4. CLEAN OUTLIERS
     a. by vintage (should be more under control)
     b. by price
@@ -22,9 +22,12 @@ library(rvest) #for repair_encoding(), also a package for webscraping
 
 ### required data loading ###
 
-wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
+#wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
 
 types <- read.csv("./Wine Varieties by Type/red_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
+white_types <- read.csv("./Wine Varieties by Type/white_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
+names(white_types) <- c("variety", "type")
+types <- rbind(types, white_types)
 
 ### data prepping ###
 wines <- wines0 %>%
@@ -44,23 +47,23 @@ varieties <- varieties %>%
   
   #search by membership in type-vector (may be redundant)
   mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "red"]), "red", type)) %>%
-  mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "white"]), "white", type)) # to be implemented 
+  mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "white"]), "white", type)) %>% 
   
   #search by text to capture blends, e.g. "cabernet sauvignon-syrah"
-  mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type)) #%>%
+  mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type)) %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "white"], collapse = "|"), ignore_case = T))), "white", type))
 
 #use the varieties df to incorporate type into 'wines'
 wines$blend <- ifelse(wines$variety %in% varieties$variety[varieties$blend == T], T, F)
 wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "red"], "red", NA)
-wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "white"], "white", NA)
+wines$type[is.na(wines$type) & (wines$variety %in% varieties$variety[varieties$type == "white"])] <- rep("white", sum(is.na(wines$type) & (wines$variety %in% varieties$variety[varieties$type == "white"]), na.rm = T))
 
 
 ### fix encoding errors ###
 
 ## taster_name ##
 
-levels(wines$taster_name)[levels(wines$taster_name) == "Kerin O????TKeefe"] = "Kerin O'Keefe" #fix by: ????T
+levels(wines$taster_name)[levels(wines$taster_name) == "Kerin Oâ???TKeefe"] = "Kerin O'Keefe" #fix by: ????T
 
 ## variety ##
 variety_old = varieties$variety
@@ -96,6 +99,5 @@ wines$province = repair_encoding(wines$province)
 wines$region_1 = repair_encoding(wines$region_1)
 wines$region_2 = repair_encoding(wines$region_2)
 wines$winery = repair_encoding(wines$winery)
-
 
 #write.csv(wines, "wine-data-tidied.csv")
