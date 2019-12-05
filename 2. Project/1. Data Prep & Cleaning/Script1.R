@@ -44,6 +44,10 @@ varieties <- varieties %>%
   #search type explicitly 
   mutate(type = tolower(str_match(variety, "(?i)white"))) %>%
   mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)red")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)champagne")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)sherry")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)prosecco")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)sparkling")), type)) %>%
   
   #search by membership in type-vector (may be redundant)
   mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "red"]), "red", type)) %>%
@@ -53,11 +57,16 @@ varieties <- varieties %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type)) %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "white"], collapse = "|"), ignore_case = T))), "white", type))
 
+#varieties$variety[is.na(varieties$type)]
+
 #use the varieties df to incorporate type into 'wines'
 wines$blend <- ifelse(wines$variety %in% varieties$variety[varieties$blend == T], T, F)
-wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "red"], "red", NA)
-wines$type[is.na(wines$type) & (wines$variety %in% varieties$variety[varieties$type == "white"])] <- rep("white", sum(is.na(wines$type) & (wines$variety %in% varieties$variety[varieties$type == "white"]), na.rm = T))
+wines$type <- rep(NA, nrow(wines))
 
+for(type in levels(as.factor(varieties$type))) {
+  index = is.na(wines$type) & (wines$variety %in% varieties$variety[varieties$type == type])
+  wines$type[index] <- rep(type, sum(index, na.rm = T))
+}
 
 ### fix encoding errors ###
 
@@ -99,5 +108,8 @@ wines$province = repair_encoding(wines$province)
 wines$region_1 = repair_encoding(wines$region_1)
 wines$region_2 = repair_encoding(wines$region_2)
 wines$winery = repair_encoding(wines$winery)
+
+# count NAs
+sum(is.na(wines$type))
 
 #write.csv(wines, "wine-data-tidied.csv")
