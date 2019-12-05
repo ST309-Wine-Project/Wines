@@ -22,10 +22,9 @@ library(rvest) #for repair_encoding(), also a package for webscraping
 
 ### required data loading ###
 
-#wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
+wines0 <- read.csv("winemag-data-130k-v2.csv") # source: https://www.kaggle.com/zynicide/wine-reviews
 
 types <- read.csv("./Wine Varieties by Type/red_types.csv", header = T) # source: https://en.wikipedia.org/wiki/List_of_grape_varieties
-
 
 ### data prepping ###
 wines <- wines0 %>%
@@ -45,23 +44,23 @@ varieties <- varieties %>%
   
   #search by membership in type-vector (may be redundant)
   mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "red"]), "red", type)) %>%
-  #mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "white"]), "white", type)) # to be implemented 
+  mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "white"]), "white", type)) # to be implemented 
   
   #search by text to capture blends, e.g. "cabernet sauvignon-syrah"
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type)) #%>%
-  #mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type))
+  mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "white"], collapse = "|"), ignore_case = T))), "white", type))
 
 #use the varieties df to incorporate type into 'wines'
 wines$blend <- ifelse(wines$variety %in% varieties$variety[varieties$blend == T], T, F)
 wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "red"], "red", NA)
-#wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "white"], "white", NA)
+wines$type <- ifelse(wines$variety %in% varieties$variety[varieties$type == "white"], "white", NA)
 
 
 ### fix encoding errors ###
 
 ## taster_name ##
 
-levels(wines$taster_name)[levels(wines$taster_name) == "Kerin Oâ???TKeefe"] = "Kerin O'Keefe" #fix by: â???T
+levels(wines$taster_name)[levels(wines$taster_name) == "Kerin O????TKeefe"] = "Kerin O'Keefe" #fix by: ????T
 
 ## variety ##
 variety_old = varieties$variety
