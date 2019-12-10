@@ -49,13 +49,13 @@ varieties <- varieties %>%
   
   #search type explicitly 
   mutate(type = tolower(str_match(variety, "(?i)white"))) %>%
-  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)red")), type)) %>%
-  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)champagne")), type)) %>%
-  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)sherry")), type)) %>%
-  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)prosecco")), type)) %>%
-  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)sparkling")), type)) %>%
-  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)madeira")), type)) %>%
-  #mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)port")), type)) %>% #will match with "portuguese"
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bred\\b")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bchampagne\\b")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bsherry\\b")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bprosecco\\b")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bsparkling\\b")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bmadeira\\b")), type)) %>%
+  mutate(type = ifelse(is.na(type), tolower(str_match(variety, "(?i)\\bport\\b")), type)) %>%
   
   #search by membership in type-vector (may be redundant)
   mutate(type = ifelse((is.na(type) & variety %in% types$variety[types$type == "red"]), "red", type)) %>%
@@ -65,6 +65,8 @@ varieties <- varieties %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "red"], collapse = "|"), ignore_case = T))), "red", type)) %>%
   mutate(type = ifelse((is.na(type) & str_detect(variety, regex(paste(types$variety[types$type == "white"], collapse = "|"), ignore_case = T))), "white", type))
 
+varieties$type[455,] = "rosé"
+varieties$type[492,] = "rosé"
 varieties$type[varieties$variety == "Apple"] = "apple ice wine"
 varieties$blend[str_detect(varieties$variety, "Thurgau")] = F
 
@@ -122,6 +124,7 @@ wines$province = repair_encoding(wines$province)
 wines$region_1 = repair_encoding(wines$region_1)
 wines$region_2 = repair_encoding(wines$region_2)
 wines$winery = repair_encoding(wines$winery)
+wines$description = repair_encoding(wines$description)
 
 # count NAs
 sum(is.na(wines$type))
