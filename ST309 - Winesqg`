@@ -1,0 +1,113 @@
+[33mcommit 1f6ca9a17c8edaf7b189eaa2cdcc11ee65fe5945[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Merge: d7cc491 1584217
+Author: Vladyslav4 <51828004+Vladyslav4@users.noreply.github.com>
+Date:   Tue Dec 10 16:18:28 2019 +0000
+
+    Merge pull request #4 from ST309-Wine-Project/NH
+    
+    Niclas H
+
+[33mcommit 158421730ae5956da7c4c010b6794143665d6b6e[m[33m ([m[1;31morigin/NH[m[33m, [m[1;32mNH[m[33m)[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Tue Dec 10 15:43:24 2019 +0000
+
+    Types updated with 'port' and 'rose' + encoding repaired for 'description'
+
+[33mcommit 13bb467f0bde55cbc56110ef80189748916ad832[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Thu Dec 5 16:01:53 2019 +0000
+
+    type detection expanded, misc_types introduced
+
+[33mcommit bb62e37133a0e9c10eb214c9e8c912c8da7ce0a0[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Thu Dec 5 12:01:50 2019 +0000
+
+    more type sorting
+
+[33mcommit d7cc491952ec6323c359272b52d64e103d91cb1d[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Thu Dec 5 11:16:03 2019 +0000
+
+    labelling for whites & misc.
+
+[33mcommit 1ee1934614efbcd75e2762c8056454efbc0b3c9b[m
+Author: Vladyslav4 <51828004+Vladyslav4@users.noreply.github.com>
+Date:   Thu Dec 5 10:40:35 2019 +0000
+
+    Pseudo merge
+
+[33mcommit 0d68b5874f2b946f766a8c4403837d32df923cfc[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 22:45:43 2019 +0000
+
+    .gitignore fix v.2
+
+[33mcommit dde4e8455b3ca969b2597f6bb974af5ff37d99f0[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 22:39:37 2019 +0000
+
+    .gitignore fix
+
+[33mcommit 315067c32a125296ff576dd1ae2305edfb0181e3[m[33m ([m[1;31morigin/backup[m[33m)[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 22:16:43 2019 +0000
+
+    script1 encoding fix
+
+[33mcommit 3300b23b5c2fbc17defb9bc6814f4d3321eb4a60[m
+Merge: 88326a9 f3abd26
+Author: NiclasCVH <47975984+NiclasCVH@users.noreply.github.com>
+Date:   Wed Dec 4 20:20:11 2019 +0000
+
+    Merge pull request #1 from ST309-Wine-Project/NH
+    
+    NH
+
+[33mcommit f3abd26865bdffe0af927e1b3876e58d5d1f84e7[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 20:02:07 2019 +0000
+
+    updated TODO
+
+[33mcommit 99e2c9ae59b57f053ac81889ec747e160fb8a113[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 19:58:19 2019 +0000
+
+    fixed encoding, with manual fix on 'variety'
+
+[33mcommit dad4ab63797f278fadb1cff2e8cc6e08476c9a90[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 16:23:14 2019 +0000
+
+    encoding solution example
+
+[33mcommit 88326a9227fbc2ea4ce4a9d7a717568f336610cd[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 15:45:44 2019 +0000
+
+    vStart
+
+[33mcommit 86fa629a198a33951df867c244f48dd5c772b5ac[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 13:46:18 2019 +0000
+
+    test2
+
+[33mcommit 78b43202d05afcaedf6fc91a3c4d96482158879d[m
+Author: Niclas Hallberg <niclascvh@gmail.com>
+Date:   Wed Dec 4 13:42:07 2019 +0000
+
+    undo test
+
+[33mcommit 68a25bd4e5652f9e137c7bd046fe1a62fb138590[m
+Author: Vladyslav4 <51828004+Vladyslav4@users.noreply.github.com>
+Date:   Wed Dec 4 13:38:51 2019 +0000
+
+    Test
+
+[33mcommit 240df635d49e5bf8dab4fbc2e19c57ec2e399a83[m
+Author: Vladyslav4 <51828004+Vladyslav4@users.noreply.github.com>
+Date:   Wed Dec 4 13:10:04 2019 +0000
+
+    vOriginal
