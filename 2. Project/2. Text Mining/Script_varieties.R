@@ -140,7 +140,12 @@ keep_v = c('keep_v', 'variety_dtm', 'variety_key')
 rm(list = ls()[!(ls() %in% keep_v)])
 
 variety_lda <- LDA(variety_dtm, k = 4, control = list(seed = 2020))
-variety_topics <- tidy(variety_lda, matrix = "beta")
+variety_topics0 <- tidy(variety_lda, matrix = "beta")
+
+# for creating our dictionary
+View(variety_topics %>%
+       arrange(desc(beta))
+     )
 
 # graph top terms
 
